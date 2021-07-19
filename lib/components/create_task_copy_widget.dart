@@ -280,19 +280,14 @@ class _CreateTaskCopyWidgetState extends State<CreateTaskCopyWidget> {
                   ),
                   FFButtonWidget(
                     onPressed: () async {
-                      final toDoName = textController1.text;
-                      final toDoDescription = textController2.text;
-                      final toDoDate = datePicked;
-
-                      final toDoListRecordData = createToDoListRecordData(
-                        toDoName: toDoName,
-                        toDoDescription: toDoDescription,
-                        toDoDate: toDoDate,
+                      final toDoListCreateData = createToDoListRecordData(
+                        toDoName: textController1.text,
+                        toDoDescription: textController2.text,
+                        toDoDate: datePicked,
                       );
-
                       await ToDoListRecord.collection
                           .doc()
-                          .set(toDoListRecordData);
+                          .set(toDoListCreateData);
                       Navigator.pop(context);
                     },
                     text: 'Create Task',

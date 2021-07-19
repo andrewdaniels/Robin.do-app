@@ -9,7 +9,9 @@ import 'schema/to_do_list_record.dart';
 import 'schema/serializers.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
+export 'schema/index.dart';
 export 'schema/serializers.dart';
+
 export 'schema/users_record.dart';
 export 'schema/to_do_list_record.dart';
 

@@ -241,21 +241,16 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   ),
                   FFButtonWidget(
                     onPressed: () async {
-                      final toDoName = textController1.text;
-                      final toDoDescription = textController2.text;
-                      final toDoDate = datePicked;
-
-                      final toDoListRecordData = createToDoListRecordData(
-                        toDoName: toDoName,
-                        toDoDescription: toDoDescription,
-                        toDoDate: toDoDate,
+                      final toDoListCreateData = createToDoListRecordData(
+                        toDoName: textController1.text,
+                        toDoDescription: textController2.text,
+                        toDoDate: datePicked,
                       );
-
                       final toDoListRecordReference =
                           ToDoListRecord.collection.doc();
-                      await toDoListRecordReference.set(toDoListRecordData);
+                      await toDoListRecordReference.set(toDoListCreateData);
                       NewRecord = ToDoListRecord.getDocumentFromData(
-                          toDoListRecordData, toDoListRecordReference);
+                          toDoListCreateData, toDoListRecordReference);
                       Navigator.pop(context);
 
                       setState(() {});

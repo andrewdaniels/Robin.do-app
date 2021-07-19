@@ -55,7 +55,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   image: DecorationImage(
                     fit: BoxFit.fitWidth,
                     image: Image.asset(
-                      'assets/images/topSection.svg',
+                      'assets/images/topSection@2x.png',
                     ).image,
                   ),
                 ),
@@ -288,13 +288,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        NavBarPage(initialPage: 'HomePage'),
-                                  ),
-                                );
                                 if (passwordTextController.text !=
                                     confirmPasswordTextController.text) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -316,15 +309,21 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   return;
                                 }
 
-                                final fullName = fullNameController.text;
-
-                                final usersRecordData = createUsersRecordData(
-                                  fullName: fullName,
+                                final usersCreateData = createUsersRecordData(
+                                  displayName: fullNameController.text,
                                 );
-
                                 await UsersRecord.collection
                                     .doc(user.uid)
-                                    .update(usersRecordData);
+                                    .update(usersCreateData);
+
+                                await Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        NavBarPage(initialPage: 'myTasks'),
+                                  ),
+                                  (r) => false,
+                                );
                               },
                               text: 'Create Account',
                               options: FFButtonOptions(
@@ -386,6 +385,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         fontFamily: 'Lexend Deca',
                                         color: Colors.white,
                                       ),
+                                      elevation: 0,
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
                                         width: 1,

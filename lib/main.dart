@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'auth/firebase_user_provider.dart';
 import 'package:robin_do/splash_screen/splash_screen_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
-import 'home_page/home_page_widget.dart';
+import 'my_tasks/my_tasks_widget.dart';
 import 'completed_tasks/completed_tasks_widget.dart';
 import 'my_profile/my_profile_widget.dart';
 
@@ -63,7 +63,7 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPage = 'HomePage';
+  String _currentPage = 'myTasks';
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _NavBarPageState extends State<NavBarPage> {
   @override
   Widget build(BuildContext context) {
     final tabs = {
-      'HomePage': HomePageWidget(),
+      'myTasks': MyTasksWidget(),
       'CompletedTasks': CompletedTasksWidget(),
       'MyProfile': MyProfileWidget(),
     };
@@ -93,7 +93,7 @@ class _NavBarPageState extends State<NavBarPage> {
               color: FlutterFlowTheme.primaryColor,
               size: 32,
             ),
-            label: 'Home',
+            label: 'My Tasks',
           ),
           BottomNavigationBarItem(
             icon: Icon(

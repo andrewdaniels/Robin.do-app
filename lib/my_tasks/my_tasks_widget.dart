@@ -3,18 +3,19 @@ import '../create_task_page/create_task_page_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../task_details/task_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
-class CompletedTasksWidget extends StatefulWidget {
-  CompletedTasksWidget({Key key}) : super(key: key);
+class MyTasksWidget extends StatefulWidget {
+  MyTasksWidget({Key key}) : super(key: key);
 
   @override
-  _CompletedTasksWidgetState createState() => _CompletedTasksWidgetState();
+  _MyTasksWidgetState createState() => _MyTasksWidgetState();
 }
 
-class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
+class _MyTasksWidgetState extends State<MyTasksWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -25,10 +26,9 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
         backgroundColor: FlutterFlowTheme.primaryColor,
         automaticallyImplyLeading: false,
         title: Text(
-          'Completed Tasks',
+          'My Tasks',
           style: FlutterFlowTheme.title1.override(
             fontFamily: 'Lexend Deca',
-            fontWeight: FontWeight.w900,
           ),
         ),
         actions: [],
@@ -37,23 +37,29 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
       ),
       backgroundColor: FlutterFlowTheme.darkBG,
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.bottomToTop,
-              duration: Duration(milliseconds: 270),
-              reverseDuration: Duration(milliseconds: 270),
-              child: CreateTaskPageWidget(),
-            ),
-          );
+        onPressed: () {
+          print('FloatingActionButton pressed ...');
         },
         backgroundColor: FlutterFlowTheme.primaryColor,
         elevation: 8,
-        child: Icon(
-          Icons.add_rounded,
-          color: FlutterFlowTheme.white,
-          size: 32,
+        child: IconButton(
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.bottomToTop,
+                duration: Duration(milliseconds: 270),
+                reverseDuration: Duration(milliseconds: 270),
+                child: CreateTaskPageWidget(),
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.add_rounded,
+            color: FlutterFlowTheme.white,
+            size: 30,
+          ),
+          iconSize: 30,
         ),
       ),
       body: SafeArea(
@@ -63,17 +69,38 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Image.asset(
-                  'assets/images/waves@2x.png',
+                Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 56,
-                  fit: BoxFit.cover,
+                  height: 53,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.darkBG,
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: Image.asset(
+                        'assets/images/waves@2x.png',
+                      ).image,
+                    ),
+                  ),
                 )
               ],
             ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'Scheduled Tasks',
+                    style: FlutterFlowTheme.bodyText2.override(
+                      fontFamily: 'Lexend Deca',
+                    ),
+                  )
+                ],
+              ),
+            ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,9 +108,8 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
                     Expanded(
                       child: StreamBuilder<List<ToDoListRecord>>(
                         stream: queryToDoListRecord(
-                          queryBuilder: (toDoListRecord) => toDoListRecord
-                              .where('toDoState', isEqualTo: true)
-                              .orderBy('toDoDate', descending: true),
+                          queryBuilder: (toDoListRecord) =>
+                              toDoListRecord.orderBy('toDoDate'),
                         ),
                         builder: (context, snapshot) {
                           // Customize what your widget looks like when it's loading.
@@ -100,26 +126,39 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
                           }
                           List<ToDoListRecord> columnToDoListRecordList =
                               snapshot.data;
-                          if (columnToDoListRecordList.isEmpty) {
-                            return Center(
-                              child: Image.asset(
-                                'assets/images/uiList_Empty@3x.png',
+                          // Customize what your widget looks like with no query results.
+                          if (snapshot.data.isEmpty) {
+                            return Container(
+                              height: 100,
+                              child: Center(
+                                child: Text('No results.'),
                               ),
                             );
                           }
-                          return Padding(
-                            padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    columnToDoListRecordList.length,
-                                    (columnIndex) {
-                                  final columnToDoListRecord =
-                                      columnToDoListRecordList[columnIndex];
-                                  return Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                          return SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children:
+                                  List.generate(columnToDoListRecordList.length,
+                                      (columnIndex) {
+                                final columnToDoListRecord =
+                                    columnToDoListRecordList[columnIndex];
+                                return Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TaskDetailsWidget(
+                                            toDoNote:
+                                                columnToDoListRecord.reference,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Material(
                                       color: Colors.transparent,
                                       elevation: 3,
@@ -226,9 +265,9 @@ class _CompletedTasksWidgetState extends State<CompletedTasksWidget> {
                                         ),
                                       ),
                                     ),
-                                  );
-                                }),
-                              ),
+                                  ),
+                                );
+                              }),
                             ),
                           );
                         },

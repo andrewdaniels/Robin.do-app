@@ -1,13 +1,8 @@
 import 'dart:async';
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:latlong/latlong.dart';
-
-import 'schema_util.dart';
+import 'index.dart';
 import 'serializers.dart';
+import 'package:built_value/built_value.dart';
 
 part 'to_do_list_record.g.dart';
 
@@ -27,6 +22,9 @@ abstract class ToDoListRecord
 
   @nullable
   bool get toDoState;
+
+  @nullable
+  DateTime get completedDate;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -59,6 +57,7 @@ Map<String, dynamic> createToDoListRecordData({
   String toDoName,
   String toDoDescription,
   bool toDoState,
+  DateTime completedDate,
 }) =>
     serializers.toFirestore(
         ToDoListRecord.serializer,
@@ -66,16 +65,5 @@ Map<String, dynamic> createToDoListRecordData({
           ..toDoDate = toDoDate
           ..toDoName = toDoName
           ..toDoDescription = toDoDescription
-          ..toDoState = toDoState));
-
-ToDoListRecord get dummyToDoListRecord {
-  final builder = ToDoListRecordBuilder()
-    ..toDoDate = dummyTimestamp
-    ..toDoName = dummyString
-    ..toDoDescription = dummyString
-    ..toDoState = dummyBoolean;
-  return builder.build();
-}
-
-List<ToDoListRecord> createDummyToDoListRecord({int count}) =>
-    List.generate(count, (_) => dummyToDoListRecord);
+          ..toDoState = toDoState
+          ..completedDate = completedDate));
